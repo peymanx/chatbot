@@ -5,8 +5,8 @@ const path = require("path");
 const app = express();
 const bot = new RiveScript({ utf8: true });
 
-// بارگذاری فایل RiveScript
-bot.loadFile("./bot/bot.rive").then(() => bot.sortReplies());
+
+bot.loadDirectory("./brain").then(() => bot.sortReplies());
 
 // Middleware
 app.use(express.json());

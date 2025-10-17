@@ -4,7 +4,7 @@ const RiveScript = require("rivescript");
 const bot = new RiveScript({ utf8: true });
 
 // بارگذاری فایل .rive
-bot.loadFile("./bot/bot.rive").then(() => {
+bot.loadDirectory("./brain").then(() => {
     bot.sortReplies();
     console.log("بات آماده است! برای خروج Ctrl+C را فشار دهید.");
     startChat();
