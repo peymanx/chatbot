@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>چت بات فارسی</title>
+<style>
+/* ===== تم دارک و تنظیمات کلی ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Tahoma", "Vazir", sans-serif;
+    direction: rtl;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* ===== هدر ===== */
+h2 {
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #333;
+}
+
+/* ===== محیط چت ===== */
+#chat {
+    flex: 1; /* پر کردن تمام فضای بین هدر و ورودی */
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ===== ورودی و دکمه ===== */
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background-color: #1f1f1f;
+    border-top: 1px solid #333;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #2c2c2c;
+    color: #fff;
+}
+
+.chat-input input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #444;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #3a3a3a;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.chat-input button:hover {
+    background-color: #555;
+}
+
+/* ===== پیام‌ها ===== */
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.user {
+    align-self: flex-start;
+    background-color: #2e7d32;
+}
+
+.bot {
+    align-self: flex-end;
+    background-color: #1565c0;
+}
+</style>
+</head>
+<body>
+
+<h2>چت بات فارسی</h2>
+
+<div id="chat"></div>
+
+<div class="chat-input">
+    <input type="text" id="msg" placeholder="پیام خود را وارد کنید">
+    <button onclick="sendMessage()">ارسال</button>
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const msgInput = document.getElementById("msg");
+
+function appendMessage(text, cls) {
+    const div = document.createElement("div");
+    div.className = `message ${cls}`;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendMessage() {
+    const msg = msgInput.value.trim();
+    if (!msg) return;
+
+    appendMessage("شما: " + msg, "user");
+    msgInput.value = "";
+
+    try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user: "localuser", message: msg })
+        });
+
+        const data = await response.json();
+        if (data.reply) {
+            appendMessage("بات: " + data.reply, "bot");
+        } else if (data.error) {
+            appendMessage("خطا: " + data.error, "bot");
+        }
+    } catch (err) {
+        appendMessage("خطا در ارتباط با سرور", "bot");
+    }
+}
+
+msgInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+});
+</script>
+
+</body>
+</html>
