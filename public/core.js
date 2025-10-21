@@ -49,10 +49,16 @@ function appendMessage(text, cls, username=""){
   }
 
   // خطوط جدید (\n واقعی یا \\n)
-  text.replace(/\\n/g, "\n").split("\n").forEach((line, i, arr)=>{
-    div.appendChild(document.createTextNode(line));
-    if(i < arr.length - 1) div.appendChild(document.createElement("br"));
-  });
+ // اگر متن شامل HTML است
+ if(text.includes("<a")) {
+    div.innerHTML += text.replace(/\\n/g, "<br>");
+  } else {
+    // متن معمولی
+    text.replace(/\\n/g, "\n").split("\n").forEach((line, i, arr)=>{
+      div.appendChild(document.createTextNode(line));
+      if(i < arr.length - 1) div.appendChild(document.createElement("br"));
+    });
+  }
 
   if(cls==="system"){
     chat.appendChild(div);
