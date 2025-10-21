@@ -5,8 +5,10 @@ const path = require("path");
 const app = express();
 const bot = new RiveScript({ utf8: true });
 
-
-bot.loadDirectory("./brain").then(() => bot.sortReplies());
+// بارگذاری Brain
+bot.loadDirectory("./brain")
+  .then(() => bot.sortReplies())
+  .catch((err) => console.error("خطا در بارگذاری brain:", err));
 
 // Middleware
 app.use(express.json());
@@ -21,9 +23,17 @@ app.post("/api/chat", async (req, res) => {
     }
 
     try {
+        // گرفتن پاسخ بات
         const reply = await bot.reply(user, message);
-        res.json({ reply });
+
+        // گرفتن تمام متغیرهای ذخیره شده برای کاربر
+        const vars = await bot.getUservars(user);
+
+        // برگرداندن reply و vars به کلاینت
+        res.json({ reply, vars });
+
     } catch (error) {
+        console.error("خطای سرور:", error);
         res.status(500).json({ error: "خطای داخلی سرور" });
     }
 });
