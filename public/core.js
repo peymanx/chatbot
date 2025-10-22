@@ -3,6 +3,9 @@ const chat = document.getElementById("chat");
 const msgInput = document.getElementById("msg");
 const themeBtn = document.getElementById("themeToggle");
 
+// Unsplash
+const api_key = 'jKoE_GBwJWZysJHOTN7x6eAi6rUYPTkNDx5n5aw5F8Y';
+
 // تاریخچه پیام‌ها
 let history = [];
 let historyIndex = -1;
@@ -52,7 +55,11 @@ function appendMessage(text, cls, username=""){
  // اگر متن شامل HTML است
  if(text.includes("<a")) {
     div.innerHTML += text.replace(/\\n/g, "<br>");
-  } else {
+  } 
+  else if(text.includes("<img")) {
+    div.innerHTML += text.replace(/\\n/g, "<br>");
+  }
+  else {
     // متن معمولی
     text.replace(/\\n/g, "\n").split("\n").forEach((line, i, arr)=>{
       div.appendChild(document.createTextNode(line));
@@ -94,10 +101,21 @@ async function sendMessage(){
       body:JSON.stringify({user:"localuser",message:msg})
     });
 
-    const data = await res.json();
+    const data = await res.json(); 
 
-    // اگر سرور متغیر name را برگرداند، username جایگزین شود
+    
     if(data.vars && data.vars.name) username = data.vars.name;
+
+    if(msg.startsWith("ترجمه ") && data.vars && data.vars.translate) {
+      const word = data.vars.translate;
+      translateText(word).then(translated => {
+        appendMessage(translated,"bot","📙 ترجمه: " + word);
+      });
+    }
+
+    if(msg.startsWith("عکس ") && data.vars && data.vars.image) {
+      handleImage(data.vars.image);
+    }
 
     if(data.vars && data.vars.theme) {
         if(darkMode && data.vars.theme=="light"){
@@ -145,3 +163,65 @@ msgInput.addEventListener("keydown", e=>{
 msgInput.addEventListener("keypress", e=>{
   if(e.key==='Enter') sendMessage();
 });
+
+
+
+async function getImage(word) {
+
+  const accessKey = api_key;
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(word)}&per_page=1&client_id=${accessKey}`;
+  let result = "./images/no-image.png";
+  
+  try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+          result= data.results[0].urls.small;
+      } else {
+        result= "./images/no-image.png";
+      }
+  } catch (error) {
+      console.error(error);
+      result= "./images/no-image.png";
+
+  }
+
+  appendMessage("<img src='" + result +"' style='width:200px;'>","bot","📱 عکس: " + word);
+
+}
+
+
+
+    // --- تابع ترجمه ---
+    async function translateText(word) {
+      const isPersian = /[\u0600-\u06FF]/.test(word);
+      const from = isPersian ? "fa" : "en";
+      const to = isPersian ? "en" : "fa";
+    
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=${from}|${to}`;
+      
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.responseData.translatedText || word;
+      } catch(e) {
+        console.error("خطا در ترجمه:", e);
+        return word;
+      }
+    }
+    
+    // --- تابع دریافت عکس ---
+    async function handleImage(word) {
+      const isPersian = /[\u0600-\u06FF]/.test(word);
+    
+      let finalWord = word;
+    
+      if(isPersian) {
+        // اگر فارسی بود، اول به انگلیسی ترجمه کن
+        finalWord = await translateText(word);
+      }
+    
+      // سپس برای دریافت عکس ارسال کن
+      getImage(finalWord);
+    }
+    

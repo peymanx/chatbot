@@ -1,123 +1,171 @@
 :root {
-    --bg-color: #121212;
-    --text-color: #fff;
-    --header-bg: #1f1f1f;
-    --input-bg: #1f1f1f;
-    --user-bg: #2e7d32;
-    --bot-bg: #1565c0;
-    --system-bg: #fff;
-    --system-text: #222;
-  }
-  
-  body {
-    margin:0; padding:0;
-    font-family:"Vazirmatn",Tahoma,sans-serif;
-    background: var(--bg-color); color: var(--text-color);
-    display:flex; flex-direction:column; height:100vh;
-  }
-  
-  header{
-    background: var(--header-bg);
-    padding:15px; text-align:center;
-    font-size:22px; font-weight:700;
-    border-bottom:1px solid #333;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  
-  header button{
-    background:#3a3a3a; border:none; border-radius:8px;
-    color:#fff; padding:5px 10px; cursor:pointer; font-size:14px;
-  }
-  header button:hover{background:#555;}
-  
-  /* محیط چت */
-  .chat-container{
-    flex:1; display:flex; flex-direction:column-reverse;
-    padding:15px;
-    overflow-y:auto;
-    gap:8px;
-  }
-  
-  /* پیام‌ها */
-  .message{
-    max-width:75%;
-    padding:10px 15px;
-    border-radius:20px;
-    position:relative;
-    word-wrap:break-word;
-    line-height:1.5;
-    opacity:0;
-    transform: translateY(30px);
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease-out;
-  }
-  
-  .message.show{
-    opacity:1;
-    transform: translateY(0);
-  }
-  
-  .username{
-    font-size:12px; font-weight:bold;
-    margin-bottom:4px;
-    display:block;
-    opacity:0.8;
-    color:#eee;
-  }
-  
-  /* کاربر سبز راست */
-  .user{
-    align-self:flex-end;
-    background: var(--user-bg);
-    color:white;
-    border-bottom-right-radius:0;
-  }
-  .user::after{
-    content:""; position:absolute;
-    right:-8px; bottom:0;
-    width:0;height:0;
-    border-top:8px solid var(--user-bg);
-    border-right:8px solid transparent;
-  }
-  
-  /* بات آبی چپ */
-  .bot{
-    align-self:flex-start;
-    background: var(--bot-bg);
-    color:white;
-    border-bottom-left-radius:0;
-  }
-  .bot::after{
-    content:""; position:absolute;
-    left:-8px; bottom:0;
-    width:0;height:0;
-    border-top:8px solid var(--bot-bg);
-    border-left:8px solid transparent;
-  }
-  
-  /* سیستم سفید وسط */
-  .system{
-    align-self:center;
-    background: var(--system-bg);
-    color: var(--system-text);
-    border-radius:12px;
-    padding:8px 15px; font-weight:600;
-    box-shadow:0 0 5px rgba(0,0,0,0.3);
-    opacity:1; transform:translateY(0);
-  }
-  
-  /* ورودی */
-  .chat-input{
-    display:flex; padding:12px; background: var(--input-bg); border-top:1px solid #333;
-  }
-  .chat-input input{
-    flex:1; padding:10px 12px;
-    border-radius:8px; border:none;
-    background:#222; color:#fff; font-size:16px;
-  }
-  .chat-input input:focus{outline:none; box-shadow:0 0 5px #444;}
-  .chat-input button{
-    margin-right:10px; padding:10px 20px;
-    background:#3a3a3a; border:none; border-radius:8px;
-    color:#fff; cursor:pointer; font-size:16px; font-weight:600;
-  }
-  .chat-input button:hover{background:#555;}
+  --bg-color: #121212;
+  --text-color: #fff;
+  --header-bg: #1f1f1f;
+  --input-bg: #1f1f1f;
+  --user-bg: #2e7d32;
+  --bot-bg: #1565c0;
+  --system-bg: #fff;
+  --system-text: #222;
+}
+
+body {
+  margin:0; padding:0;
+  font-family:"Vazirmatn",Tahoma,sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  display:flex;
+  justify-content:center; /* وسط چین کردن wrapper */
+}
+
+.chat-wrapper {
+  width:100%;
+  max-width:800px; /* محدود کردن عرض */
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+
+/* هدر */
+header {
+  background: var(--header-bg);
+  padding:15px;
+  text-align:center;
+  font-size:22px;
+  font-weight:700;
+  border-bottom:1px solid #333;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header button {
+  background:#3a3a3a;
+  border:none;
+  border-radius:8px;
+  color:#fff;
+  padding:5px 10px;
+  cursor:pointer;
+  font-size:14px;
+}
+header button:hover { background:#555; }
+
+/* محیط چت */
+.chat-container {
+  flex:1;
+  display:flex;
+  flex-direction:column-reverse;
+  padding:15px;
+  overflow-y:auto;
+  gap:8px;
+}
+
+/* پیام‌ها */
+.message {
+  max-width:75%;
+  padding:10px 15px;
+  border-radius:20px;
+  position:relative;
+  word-wrap:break-word;
+  line-height:1.5;
+  opacity:0;
+  transform: translateY(30px);
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease-out;
+}
+
+.message.show {
+  opacity:1;
+  transform: translateY(0);
+}
+
+.username {
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:4px;
+  display:block;
+  opacity:0.8;
+  color:#eee;
+}
+
+/* کاربر سبز راست */
+.user {
+  align-self:flex-end;
+  background: var(--user-bg);
+  color:white;
+  border-bottom-right-radius:0;
+}
+.user::after {
+  content:"";
+  position:absolute;
+  right:-8px; bottom:0;
+  width:0;height:0;
+  border-top:8px solid var(--user-bg);
+  border-right:8px solid transparent;
+}
+
+/* بات آبی چپ */
+.bot {
+  align-self:flex-start;
+  background: var(--bot-bg);
+  color:white;
+  border-bottom-left-radius:0;
+}
+.bot::after {
+  content:"";
+  position:absolute;
+  left:-8px; bottom:0;
+  width:0;height:0;
+  border-top:8px solid var(--bot-bg);
+  border-left:8px solid transparent;
+}
+
+/* سیستم سفید وسط */
+.system {
+  align-self:center;
+  background: var(--system-bg);
+  color: var(--system-text);
+  border-radius:12px;
+  padding:8px 15px;
+  font-weight:600;
+  box-shadow:0 0 5px rgba(0,0,0,0.3);
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ورودی */
+.chat-input {
+  display:flex;
+  padding:12px;
+  background: var(--input-bg);
+  border-top:1px solid #333;
+}
+.chat-input input {
+  flex:1;
+  padding:10px 12px;
+  border-radius:8px;
+  border:none;
+  background:#222;
+  color:#fff;
+  font-size:16px;
+}
+.chat-input input:focus { outline:none; box-shadow:0 0 5px #444; }
+
+.chat-input button {
+  margin-right:10px;
+  padding:10px 20px;
+  background:#3a3a3a;
+  border:none;
+  border-radius:8px;
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:600;
+}
+.chat-input button:hover { background:#555; }
+
+/* ریسپانسیو برای موبایل */
+@media(max-width:400px){
+  .chat-input input, .chat-input button { font-size:14px; padding:8px; }
+  header { font-size:18px; padding:10px; }
+  .message { max-width:90%; padding:8px 12px; }
+}
