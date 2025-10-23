@@ -8,7 +8,13 @@ const api_key = 'jKoE_GBwJWZysJHOTN7x6eAi6rUYPTkNDx5n5aw5F8Y';
 
 // تاریخچه پیام‌ها
 let history = [];
+history.unshift('من پیمان هستم');
+history.unshift('چطوری');
+history.unshift('خوبی');
+history.unshift('سلام');
 let historyIndex = -1;
+
+
 
 // حالت دارک/لایت
 let darkMode = true;
