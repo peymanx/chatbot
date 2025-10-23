@@ -119,6 +119,28 @@ async function sendMessage(){
       });
     }
 
+    if(msg.startsWith("ساعت") && data.vars && data.vars.ask_time) {
+
+        appendMessage(gettimenow(),"bot","⏰ ساعت: ");
+        return;
+     
+    }
+
+
+    if(msg.startsWith("چندمه") && data.vars && data.vars.ask_date) {
+        const date = new Date(); 
+        const df = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+          year: 'numeric', month: '2-digit', day: '2-digit'
+        });
+
+        appendMessage("امروز: " + df.format(date),"bot","🗓️ تاریخ: ");
+        return;
+     
+    }
+
+
+
+
     if(msg.startsWith("عکس ") && data.vars && data.vars.image) {
       handleImage(data.vars.image);
     }
@@ -231,3 +253,15 @@ async function getImage(word) {
       getImage(finalWord);
     }
     
+
+    function getTimeNow(){
+       
+            var d = new Date();
+        var curr_hour = d.getHours()<10? '0'+d.getHours():d.getHours();
+        var curr_min = d.getMinutes()<10? '0'+d.getMinutes():d.getMinutes();
+            var time24 =  curr_hour + ":" + curr_min;
+        return time24;
+        }
+
+
+
