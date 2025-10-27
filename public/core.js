@@ -117,33 +117,35 @@ async function sendMessage(){
       translateText(word).then(translated => {
         appendMessage(translated,"bot","📙 ترجمه: " + word);
       });
-    }
+    }    if(msg.startsWith("ساعت") && data.vars && data.vars.ask_time) {
 
-    if(msg.startsWith("ساعت") && data.vars && data.vars.ask_time) {
-
-        appendMessage(gettimenow(),"bot","⏰ ساعت: ");
-        return;
-     
-    }
+      appendMessage(gettimenow(),"bot","⏰ ساعت: ");
+      return;
+   
+  }
 
 
-    if(msg.startsWith("چندمه") && data.vars && data.vars.ask_date) {
-        const date = new Date(); 
-        const df = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
-          year: 'numeric', month: '2-digit', day: '2-digit'
-        });
+  if(msg.startsWith("چندمه") && data.vars && data.vars.ask_date) {
+      const date = new Date(); 
+      const df = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+        year: 'numeric', month: '2-digit', day: '2-digit'
+      });
 
-        appendMessage("امروز: " + df.format(date),"bot","🗓️ تاریخ: ");
-        return;
-     
-    }
-
-
-
-
+      appendMessage("امروز: " + df.format(date),"bot","🗓️ تاریخ: ");
+      return;
+   
+  }
     if(msg.startsWith("عکس ") && data.vars && data.vars.image) {
       handleImage(data.vars.image);
     }
+
+
+
+    if(msg.startsWith("بگو ") && data.vars && data.vars.say) {
+      playText(data.vars.say);
+
+    }
+
 
     if(data.vars && data.vars.theme) {
         if(darkMode && data.vars.theme=="light"){
@@ -253,15 +255,37 @@ async function getImage(word) {
       getImage(finalWord);
     }
     
-
     function getTimeNow(){
        
-            var d = new Date();
-        var curr_hour = d.getHours()<10? '0'+d.getHours():d.getHours();
-        var curr_min = d.getMinutes()<10? '0'+d.getMinutes():d.getMinutes();
-            var time24 =  curr_hour + ":" + curr_min;
-        return time24;
-        }
+      var d = new Date();
+  var curr_hour = d.getHours()<10? '0'+d.getHours():d.getHours();
+  var curr_min = d.getMinutes()<10? '0'+d.getMinutes():d.getMinutes();
+      var time24 =  curr_hour + ":" + curr_min;
+  return time24;
+    }
 
 
+    
+    async function playText(text) {
 
+
+      try {
+        // ارسال متن به سرور
+        const response = await fetch('http://localhost:3000/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+
+        // گرفتن داده صوتی به صورت blob
+        const audioBlob = await response.blob();
+
+        // ایجاد URL برای پخش صدا
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+      } catch (err) {
+        console.error(err);
+        alert('خطا در پخش صدا');
+      }
+    }

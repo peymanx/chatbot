@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>پخش متن فارسی</title>
+</head>
+<body>
+  <input type="text" id="textInput" placeholder="متن فارسی را وارد کنید" style="width:300px;">
+  <button onclick="playText()">پخش صدا</button>
+
+  <script>
+    
+    async function playText() {
+      const text = document.getElementById('textInput').value;
+      if (!text) return alert('لطفاً متن وارد کنید');
+
+      try {
+        // ارسال متن به سرور
+        const response = await fetch('http://localhost:3000/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+
+        // گرفتن داده صوتی به صورت blob
+        const audioBlob = await response.blob();
+
+        // ایجاد URL برای پخش صدا
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+      } catch (err) {
+        console.error(err);
+        alert('خطا در پخش صدا');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -73,12 +73,15 @@
 + عکس *
 - <set image=<star>> به زودی عکس حاضر میشه...
 
+
++ بگو *
+- <set say=<star>> به زودی میگم...
+
 + ساعت چنده
 - <set ask_time=true> 
 
 + چندمه
 - <set ask_date=true> 
-
 + ترجمه *
 - <set translate=<star>> به زودی ترجمه حاضر میشه...
 
