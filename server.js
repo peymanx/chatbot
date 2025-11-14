@@ -62,22 +62,25 @@ app.use(express.static(path.join(__dirname, "public"))); // سرو کردن فا
 //   });
   
 
-
-// --- Chat API endpoint ---
+// --- Chat endpoint ---
 app.post("/api/chat", async (req, res) => {
-    const { user, message } = req.body;
+  const { user, message } = req.body;
 
-    if (!user || !message || message.trim() === "") {
-        return res.status(400).json({ error: "پارامترهای 'user' و 'message' الزامی هستند و پیام نمی‌تواند خالی باشد" });
-    }
+console.log(message);
 
-    try {
-        const reply = await bot.reply(user, message);
-        res.json({ reply });
-    } catch (error) {
-        console.error(" Express Server Error:", error);
-        res.status(500).json({ error: "خطای داخلی سرور" });
-    }
+
+  if (!user || !message) {
+    return res.status(400).json({ error: "پارامترهای 'user' و 'message' الزامی هستند" });
+  }
+
+  try {
+    const reply = await bot.reply(user, message);
+    const vars = await bot.getUservars(user);
+    res.json({ reply, vars });
+  } catch (error) {
+    console.error("خطای سرور:", error);
+    res.status(500).json({ error: "خطای داخلی سرور" });
+  }
 });
 
 // --- راه‌اندازی سرور ---
