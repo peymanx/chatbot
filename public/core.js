@@ -137,12 +137,12 @@ async function sendMessage() {
       playText(data.vars.say);
     }
 
-    if (data.vars && data.vars.theme) {
+    if (msg.startsWith("تم ") && data.vars && data.vars.theme) {
       if (darkMode && data.vars.theme == "light") {
         themeBtn.click();
       }
 
-      if (!darkMode && data.vars.theme == "dark") {
+      if (msg.startsWith("تم ") &&!darkMode && data.vars.theme == "dark") {
         themeBtn.click();
       }
     }
