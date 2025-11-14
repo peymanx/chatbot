@@ -2,13 +2,16 @@
 # 🚀 @peymanx Personal AI ChatBot  
 Web-based conversational AI using **Node.js + RiveScript + ElevenLabs + Unsplash**
 
-![chat](./icon.png)
 
+![chat](./icon.png)  
+# [🤖 Try it online](https://peymanx-chatbot.onrender.com/)
+ 
 This project is a complete web chatbot that runs on **Node.js + Express** (backend) and **HTML/CSS/JavaScript** (frontend).  
 It supports natural conversation, translation, image search, text-to-speech, and theme switching.   
 
 ## Try RiveScript Online  
-https://play.rivescript.com/
+https://play.rivescript.com/   
+https://peymanx-chatbot.onrender.com/
 
 
 
