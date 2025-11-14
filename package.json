@@ -1,19 +1,17 @@
 {
-  "name": "myrobot",
+  "name": "mychatbot",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Peyman Majidi",
+  "license": "MIT",
   "dependencies": {
-    "@elevenlabs/elevenlabs-js": "^2.20.1",
     "express": "^5.1.0",
-    "gtts": "^0.2.1",
     "nodemon": "^3.1.10",
-    "rivescript": "^1.19.0"
+    "rivescript": "^2.2.1"
   },
   "keywords": [],
   "description": ""
